@@ -1,62 +1,62 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
 export default function Home() {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const move = (e: MouseEvent) => {
+      setPosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
+  }, []);
+
   const projects = [
     {
-      title: "Kingo Hamrokhet",
-      description:
-        "A creative web platform showcasing digital innovation and clean UI design.",
-      url: "https://kingo-hamrokhet.lovestoblog.com/",
-    },
-    {
       title: "Travel Landing Page",
-      description:
-        "A modern and responsive travel landing page with beautiful UI.",
+      image: "/projects/travel.png",
       url: "https://77kingo.github.io/travel_landing/",
     },
     {
       title: "Quiz App",
-      description:
-        "Interactive quiz application built using JavaScript.",
+      image: "/projects/quiz.png",
       url: "https://77kingo.github.io/quiz_app/",
     },
     {
       title: "Foodie App",
-      description:
-        "A responsive food discovery app with clean layout.",
+      image: "/projects/foodie.png",
       url: "https://77kingo.github.io/foodie-app/",
     },
     {
       title: "Music Player",
-      description:
-        "Custom web music player built using JavaScript.",
+      image: "/projects/music.png",
       url: "https://77kingo.github.io/MusicPlayer/",
     },
   ];
 
   return (
-    <main className="bg-[#0f0f0f] text-white min-h-screen overflow-x-hidden scroll-smooth">
+    <main className="bg-[#0f0f0f] text-white min-h-screen relative overflow-x-hidden scroll-smooth">
 
-      {/* NAVBAR */}
-      <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-black/40 border-b border-white/10">
-        <div className="max-w-6xl mx-auto flex justify-between items-center px-6 py-4">
-          <h1 className="font-bold text-lg">Saurav Singh</h1>
-          <div className="flex gap-6 text-sm">
-            <a href="#projects" className="hover:text-purple-400 transition">Projects</a>
-            <a href="#skills" className="hover:text-purple-400 transition">Skills</a>
-            <a href="#contact" className="hover:text-purple-400 transition">Contact</a>
-            <a
-              href="https://github.com/77kingo"
-              target="_blank"
-              className="hover:text-purple-400 transition"
-            >
-              GitHub
-            </a>
-          </div>
-        </div>
-      </nav>
+      {/* Cursor Glow */}
+      <div
+        className="fixed pointer-events-none -z-10 w-40 h-40 bg-purple-500 opacity-20 blur-3xl rounded-full"
+        style={{
+          left: position.x - 80,
+          top: position.y - 80,
+        }}
+      />
+
+      {/* Background Glow */}
+      <div className="fixed inset-0 -z-20 overflow-hidden">
+        <div className="absolute top-[-200px] left-[-200px] w-[600px] h-[600px] 
+        bg-purple-600 opacity-30 blur-[150px] rounded-full animate-pulse"></div>
+
+        <div className="absolute bottom-[-200px] right-[-200px] w-[600px] h-[600px] 
+        bg-blue-600 opacity-30 blur-[150px] rounded-full animate-pulse"></div>
+      </div>
 
       {/* HERO */}
       <section className="flex flex-col items-center justify-center h-screen text-center px-6">
@@ -64,7 +64,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text"
+          className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-purple-400 to-blue-500 text-transparent bg-clip-text"
         >
           Saurav Singh
         </motion.h1>
@@ -75,57 +75,55 @@ export default function Home() {
           transition={{ delay: 0.5 }}
           className="mt-6 text-xl text-gray-400 max-w-2xl"
         >
-          Full Stack Developer building scalable, high-performance digital experiences.
+          Full Stack Developer crafting scalable and modern web experiences.
         </motion.p>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="mt-8 flex gap-6"
-        >
+        <div className="mt-8 flex gap-6 flex-wrap justify-center">
           <a
             href="#projects"
             className="px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 hover:scale-105 transition"
           >
             View Projects
           </a>
-          <a
-            href="https://github.com/77kingo"
-            target="_blank"
-            className="px-6 py-3 rounded-full border border-gray-600 hover:border-purple-500 transition"
-          >
-            GitHub
-          </a>
-        </motion.div>
-      </section>
 
-      {/* ABOUT */}
-      <section className="py-24 px-6 text-center max-w-4xl mx-auto">
-        <h2 className="text-4xl font-bold mb-6">About Me</h2>
-        <p className="text-gray-400 text-lg leading-relaxed">
-          I build modern web applications using React, Next.js, and JavaScript.
-          I focus on performance, clean UI design, and engaging user experiences.
-        </p>
+          <a
+            href="/resume.pdf"
+            download
+            className="px-6 py-3 border border-purple-500 rounded-full hover:bg-purple-500/20 transition"
+          >
+            Download Resume
+          </a>
+        </div>
       </section>
 
       {/* PROJECTS */}
-      <section id="projects" className="py-24 px-6 bg-[#111111]">
-        <h2 className="text-4xl font-bold text-center mb-16">Featured Projects</h2>
+      <section id="projects" className="py-24 px-6">
+        <h2 className="text-4xl font-bold text-center mb-16">
+          Featured Projects
+        </h2>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
           {projects.map((project, i) => (
             <motion.div
               key={i}
-              whileHover={{ scale: 1.03 }}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
+              transition={{ duration: 0.8, delay: i * 0.1 }}
               viewport={{ once: true }}
-              className="bg-[#1a1a1a] p-6 rounded-2xl border border-gray-800 shadow-lg"
+              className="backdrop-blur-xl bg-white/5 border border-white/10 
+              rounded-2xl p-6 shadow-2xl hover:scale-105 
+              hover:border-purple-500/40 transition-all duration-500"
             >
-              <h3 className="text-2xl font-semibold mb-3">{project.title}</h3>
-              <p className="text-gray-400 mb-4">{project.description}</p>
+              <img
+                src={project.image}
+                alt={project.title}
+                className="rounded-xl mb-4 w-full"
+              />
+
+              <h3 className="text-2xl font-semibold mb-3">
+                {project.title}
+              </h3>
+
               <a
                 href={project.url}
                 target="_blank"
@@ -138,62 +136,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SKILLS */}
-      <section id="skills" className="py-24 px-6">
-        <h2 className="text-4xl font-bold text-center mb-16">Skills</h2>
-
-        <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-10">
-          {[
-            { name: "React / Next.js", level: "90%" },
-            { name: "JavaScript", level: "85%" },
-            { name: "Node.js", level: "80%" },
-            { name: "Tailwind CSS", level: "88%" },
-            { name: "Git & GitHub", level: "92%" },
-            { name: "UI/UX Design", level: "75%" },
-          ].map((skill, index) => (
-            <div
-              key={index}
-              className="bg-[#1a1a1a] p-6 rounded-xl border border-gray-800"
-            >
-              <h3 className="mb-4">{skill.name}</h3>
-              <div className="w-full bg-gray-800 h-2 rounded-full">
-                <div
-                  style={{ width: skill.level }}
-                  className="h-2 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* GITHUB STATS */}
-      <section className="py-24 px-6 text-center bg-[#111111]">
-        <h2 className="text-4xl font-bold mb-12">GitHub Activity</h2>
-
-        <div className="flex flex-col items-center gap-8">
-          <img
-            src="https://github-readme-stats.vercel.app/api?username=77kingo&show_icons=true&theme=dark"
-            alt="GitHub Stats"
-            className="w-full max-w-lg"
-          />
-          <img
-            src="https://github-readme-stats.vercel.app/api/top-langs/?username=77kingo&layout=compact&theme=dark"
-            alt="Top Languages"
-            className="w-full max-w-lg"
-          />
-        </div>
-      </section>
-
       {/* CONTACT */}
-      <section id="contact" className="py-24 px-6 text-center">
+      <section className="py-24 px-6 text-center">
         <h2 className="text-4xl font-bold mb-6">
           Let’s Build Something Exceptional
         </h2>
-
-        <p className="text-gray-400 mb-8">
-          Have a project idea or collaboration in mind? Let’s connect.
-        </p>
 
         <a
           href="mailto:singhsaurav8899@gmail.com"
@@ -202,7 +149,6 @@ export default function Home() {
           singhsaurav8899@gmail.com
         </a>
       </section>
-
     </main>
   );
 }
