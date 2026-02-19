@@ -1,15 +1,23 @@
 import "./globals.css";
-import Script from "next/script";
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
-export const metadata = {
-  title: "Saurav Singh | Full Stack Developer",
+export const metadata: Metadata = {
+  metadataBase: new URL("https://premium-portfolio-77kingo.vercel.app"), // ← replace with your real domain
+
+  title: {
+    default: "Saurav Singh | Full Stack Developer",
+    template: "%s | Saurav Singh",
+  },
+
   description:
-    "Saurav Singh is a Full Stack Developer building scalable, high-performance web applications using React and Next.js.",
+    "Saurav Singh - Full Stack Developer building scalable, modern, and production-ready web applications.",
+
   openGraph: {
-    title: "Saurav Singh | Full Stack Developer",
+    title: "Saurav Singh Portfolio",
     description:
-      "Modern portfolio showcasing projects, skills and experience.",
-    url: "https://your-vercel-url.vercel.app",
+      "Full Stack Developer Portfolio with modern web projects and experience.",
+    url: "https://premium-portfolio-77kingo.vercel.app",
     siteName: "Saurav Singh Portfolio",
     images: [
       {
@@ -21,33 +29,28 @@ export const metadata = {
     locale: "en_US",
     type: "website",
   },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Saurav Singh Portfolio",
+    description: "Modern Full Stack Developer Portfolio",
+    images: ["/og-image.png"],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <html lang="en">
-      <body>
-        {children}
-
-        {/* Google Analytics (Optional) */}
-        {/* Replace G-XXXXXXX with your ID */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX`}
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-XXXXXXX');
-          `}
-        </Script>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
